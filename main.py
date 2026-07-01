@@ -15,19 +15,16 @@ import os
 #tavily = TavilyClient()
 
 
-# class Source(BaseModel):
-#     """Schema for a source used by the agent"""
+class Source(BaseModel):
+    """Schema for a source used by the agent"""
 
-#     url: str = Field(description="The URL of the source")
+    url:str = Field(description="The URL for the source")
 
+class AgentResponse(BaseModel):
+    """Schema for agent response with answers and sources"""
 
-# class AgentResponse(BaseModel):
-#     """Schema for agent response with answer and sources"""
-
-#     answer: str = Field(description="Thr agent's answer to the query")
-#     sources: List[Source] = Field(
-#         default_factory=list, description="List of sources used to generate the answer"
-#     )
+    answer:str = Field(description="Agent's response to query")
+    sources: List[Source] = Field(default_factory=list, description="List of sources used")
 
 # @tool
 # def search(query: str) -> str:
@@ -47,7 +44,7 @@ import os
 #llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 llm = ChatGroq(model="llama-3.3-70b-versatile")
 tools = [TavilySearch()]
-agent = create_agent(model=llm, tools=tools)
+agent = create_agent(model=llm, tools=tools, response_format=AgentResponse)
 
 
 def main():
